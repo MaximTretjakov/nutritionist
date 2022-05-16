@@ -1,0 +1,20 @@
+version: '3'
+services:
+
+  # Postgres setup
+  postgres_nutritionist:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 2G
