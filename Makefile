@@ -1,5 +1,9 @@
-psql-start:
-	docker-compose --compatibility -f ./build/docker-compose.yml up
+.PHONY: build
+build:
+		go build -v ./cmd/apiserver
 
-psql-stop:
-	docker-compose --compatibility -f ./build/docker-compose.yml down
+.PHONY: start-db
+start-db:
+		docker-compose --compatibility -f ./build/docker-compose.yml up
+
+.DEFAULT_GOAL := build
