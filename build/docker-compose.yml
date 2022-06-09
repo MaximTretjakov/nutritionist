@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-  # Postgres setup
+  # Postgres main db
   postgres_nutritionist:
     image: postgres:14
     environment:
