@@ -1,4 +1,4 @@
-package store
+package sqlstore
 
 import "github.com/MaximTretjakov/nutritionist/internal/app/model"
 
@@ -6,25 +6,21 @@ type UserRepository struct {
 	store *Store
 }
 
-func (r *UserRepository) Create(u *model.User) (*model.User, error) {
+func (r *UserRepository) Create(u *model.User) error {
 	if err := u.Validate(); err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := u.BeforeCreate(); err != nil {
-		return nil, err
+		return err
 	}
 
-	if err := r.store.db.QueryRow(
+	return r.store.db.QueryRow(
 		"INSERT INTO users (login, password , email) VALUES ($1, $2, $3) RETURNING id",
 		u.Login,
 		u.Password,
 		u.Email,
-	).Scan(&u.Id); err != nil {
-		return nil, err
-	}
-
-	return u, nil
+	).Scan(&u.Id)
 }
 
 func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
