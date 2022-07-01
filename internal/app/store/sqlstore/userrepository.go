@@ -1,6 +1,11 @@
 package sqlstore
 
-import "github.com/MaximTretjakov/nutritionist/internal/app/model"
+import (
+	"database/sql"
+
+	"github.com/MaximTretjakov/nutritionist/internal/app/model"
+	"github.com/MaximTretjakov/nutritionist/internal/app/store"
+)
 
 type UserRepository struct {
 	store *Store
@@ -34,6 +39,9 @@ func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
 		&u.Login,
 		&u.Password,
 	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, store.ErrRecordNotFound
+		}
 		return nil, err
 	}
 
