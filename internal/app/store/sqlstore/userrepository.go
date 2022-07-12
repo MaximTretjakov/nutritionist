@@ -21,27 +21,27 @@ func (r *UserRepository) Create(u *model.User) error {
 	}
 
 	return r.store.db.QueryRow(
-		"INSERT INTO users (login, password , email) VALUES ($1, $2, $3) RETURNING id",
+		"INSERT INTO users (login, encrypted_password , email) VALUES ($1, $2, $3) RETURNING id",
 		u.Login,
-		u.Password,
+		u.EncryptedPassword,
 		u.Email,
 	).Scan(&u.Id)
 }
 
 func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
 	u := &model.User{}
-
 	if err := r.store.db.QueryRow(
-		"SELECT id, login, password FROM users WHERE email = $1",
+		"SELECT id, email, encrypted_password FROM users WHERE email = $1",
 		email,
 	).Scan(
 		&u.Id,
-		&u.Login,
-		&u.Password,
+		&u.Email,
+		&u.EncryptedPassword,
 	); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, store.ErrRecordNotFound
 		}
+
 		return nil, err
 	}
 
