@@ -32,7 +32,7 @@ func TestServer_AuthenticateUser(t *testing.T) {
 			expectedCode: http.StatusOK,
 		},
 		{
-			name:         "not aythenticated",
+			name:         "not authenticated",
 			cookieValue:  nil,
 			expectedCode: http.StatusUnauthorized,
 		},
